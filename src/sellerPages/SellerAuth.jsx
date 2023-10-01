@@ -1,7 +1,13 @@
 import React, { useState } from 'react'
-import {Link} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
+import axios from "axios" 
+import { BASE_URL } from '../common'
+import { useDispatch } from 'react-redux'
+import { loggedInSeller } from '../store/RegisterSlice'
 
 function Auth() {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 const [isLogin,setLogin] = useState(true)
 const [register,setRegister] = useState({
   name:"",
@@ -12,6 +18,43 @@ const [loginDetails,setLoginDetails] = useState({
   email:"",
   password: ""
 })
+
+
+const registerSeller = async()=>{
+  try{
+const registerResponse = await axios.post(`${BASE_URL}seller/register`,register)
+if(registerResponse.status === 200){
+  alert("Registered Successfully , Please login")
+  setLogin(true)
+}
+
+  }catch(err){
+    alert(err?.response?.data?.message)
+    console.log(err?.response?.data?.message)
+  }
+
+}
+
+
+const login  = async()=>{
+  try{
+  const loggedInResponse = await axios.post(`${BASE_URL}seller/login`,loginDetails)
+
+if(loggedInResponse.status === 200){
+  
+  dispatch(loggedInSeller(loggedInResponse?.data))
+  navigate("/seller")
+  
+}
+
+  }catch(err){
+    
+    console.log(err?.response?.data.message,"err")
+    
+  }
+}
+
+
 // Register
 const handleRegisterChange = (e)=>{
   setRegister((prev)=>({...prev,[e.target.name]:e.target.value}))
@@ -19,7 +62,7 @@ const handleRegisterChange = (e)=>{
 
 const handleRegister = (e)=>{
   e.preventDefault()
-  console.log(register,"reg")
+  registerSeller()
 } 
 
 // login 
@@ -31,7 +74,7 @@ const handleLoginChange  = (e)=>{
 const handleLogin = (e)=>{
  
   e.preventDefault()
-  console.log(loginDetails,"pp")
+ login()
 }
 
   return (
