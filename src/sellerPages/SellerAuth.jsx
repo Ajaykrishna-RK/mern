@@ -48,7 +48,7 @@ if(loggedInResponse.status === 200){
 }
 
   }catch(err){
-    
+    alert(err?.response?.data?.message)
     console.log(err?.response?.data.message,"err")
     
   }

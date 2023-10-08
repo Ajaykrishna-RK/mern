@@ -13,8 +13,8 @@ const {token,seller} = useSelector((state)=>state.registerReducer)
     <>
   <Routes>
   <Route path='/seller/auth' element={<SellerAuth/>}/>
-  <Route path='/seller' element={token ?   <SellerHome/> : <Navigate to={"/seller"} /> }/>
-  <Route path='/seller/createProduct' element={token ?   <CreateProduct/> : <Navigate to={"/seller"} /> }/>
+  <Route path='/seller' element={token ?   <SellerHome/> : <Navigate to={"/seller/auth"} /> }/>
+  <Route path='/seller/createProduct' element={token ?   <CreateProduct/> : <Navigate to={"/seller/auth"} /> }/>
   </Routes>
 
     </>
